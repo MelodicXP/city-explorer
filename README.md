@@ -54,15 +54,15 @@ Any environment configuration steps.
 
 01-01-2001 4:59pm - Application now has a fully-functional express server, with a GET route for the location resource. -->
 
-Name of feature: ________________________________
+Name of feature: Setting up
 
-Estimate of time needed to complete: _____
+Estimate of time needed to complete: 1 hr
 
-Start time: _____
+Start time: 10:00 am
 
-Finish time: _____
+Finish time: 12:30 pm
 
-Actual time needed to complete: _____
+Actual time needed to complete: 2 1/2 hrs
 
 ## Credit and Collaborations
 <!-- Give credit (and a link) to other people or resources that helped you build this application. -->
