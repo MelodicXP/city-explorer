@@ -1,7 +1,9 @@
 import React from 'react';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-
+import axios from 'axios'
+const API_KEY = import.meta.env.VITE_LOCATIONIQ_API_KEY;
+import Explorer from './Explorer';
 
 class UserForm extends React.Component {
 
@@ -11,37 +13,75 @@ class UserForm extends React.Component {
     
     this.state = {
 
-      // Todo - Initialize any needed values here
+      searchQuery: '', // Initialize search value
+      location: null, // Initiliaze location as null
 
     };
+
   }
 
 
-  // Todo - Function to handle what button does goes here
-  handleSubmitButton = (event) => {
+  // Function to get message if connection successful or error occurred
+  handleForm = (event) => {
 
-    // Retrieve value from dropdown
-    let selectedSortValue = event.target.value;
+    console.log('Form Submitted');
 
-    // Map selected value to numeric value in sortValues ('convert' to number)
-    let sortValue = this.sortValues[selectedSortValue];
+    event.preventDefault();
 
-    // Pass value back to App.jsx via function from App.jsx
-    this.props.handleSubmitButton(sortValue); // Todo - function from App goes here
+    // console.log(API_KEY);
+
+    axios.get(`https://us1.locationiq.com/v1/search?key=${API_KEY}&q=${this.state.searchQuery}&format=json`)
+      .then(response => {
+        console.log('SUCCESS!: ', response.data);
+        this.setState({ location: response.data[0] });
+      }).catch(error => {
+        console.log('ERROR!:', error);
+      });
+
+    axios.get(`https://eu1.locationiq.com/v1/search?key=${API_KEY}&q=${this.state.searchQuery}&format=json`)
+      .then(response => {
+        console.log('SUCCESS!: ', response.data);
+        this.setState({ location: response.data[0] });
+        console.log(this.state.location.lat);
+      }).catch(error => {
+        console.log('ERROR!:', error);
+      });
 
   };
+
+
+  // Update state of query to value of input field (input by user)
+  handleChange = (event) => {
+    this.setState ( { searchQuery: event.target.value} );
+    console.log(this.state.searchQuery);
+  }
+
 
   render() {
 
     return (
       <>
-      <Form.Group className="mb-3">
-        <Form.Label>Search: </Form.Label>
-        <Form.Control type="email" placeholder="Enter name of city here" />  
-      </Form.Group>
-      <Button variant="primary" type="submit">Explore</Button>
-    </>
-      
+  
+        <Form onSubmit={this.handleForm}>
+
+          <Form.Group className="mb-3">
+            <Form.Label>Search: </Form.Label>
+            <Form.Control onChange={this.handleChange} name="city" type="text" placeholder="Enter name of city here" /> 
+          </Form.Group>
+
+          <Button variant="primary" type="submit">Explore!</Button>
+
+        </Form>
+
+        <Explorer 
+
+          displayName = {this.state.location && this.state.location.display_name}
+          latitude = {this.state.location && this.state.location.lat}
+          longitude = {this.state.location && this.state.location.lon}
+        
+        />
+        
+      </>  
     );
   }
 }
