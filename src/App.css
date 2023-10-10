@@ -3,6 +3,8 @@
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
+  background-color: #77a6f7;
+  color: white;
 }
 
 .logo {
@@ -39,4 +41,17 @@
 
 .read-the-docs {
   color: #888;
+}
+
+li {
+  list-style: none;
+  margin-top: 2%;
+}
+
+.map-image {
+  margin-top: 5%;
+}
+
+footer {
+  margin-top: 3%;
 }

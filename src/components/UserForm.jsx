@@ -15,6 +15,7 @@ class UserForm extends React.Component {
 
       searchQuery: '', // Initialize search value
       location: null, // Initiliaze location as null
+      staticMapURL: null,
 
     };
 
@@ -32,17 +33,28 @@ class UserForm extends React.Component {
 
     axios.get(`https://us1.locationiq.com/v1/search?key=${API_KEY}&q=${this.state.searchQuery}&format=json`)
       .then(response => {
+
         console.log('SUCCESS!: ', response.data);
         this.setState({ location: response.data[0] });
+        this.setState( { 
+          staticMapURL: `https://maps.locationiq.com/v3/staticmap?key=${API_KEY}&center=${this.state.location.lat},${this.state.location.lon}&zoom=9&size=600x600&markers=icon:large-blue-cutout%7C${this.state.location.lat},${this.state.location.lon}` 
+        } );
+
       }).catch(error => {
+
         console.log('ERROR!:', error);
+
       });
 
     axios.get(`https://eu1.locationiq.com/v1/search?key=${API_KEY}&q=${this.state.searchQuery}&format=json`)
       .then(response => {
+
         console.log('SUCCESS!: ', response.data);
         this.setState({ location: response.data[0] });
-        console.log(this.state.location.lat);
+        this.setState( { 
+        staticMapURL: `https://maps.locationiq.com/v3/staticmap?key=${API_KEY}&center=${this.state.location.lat},${this.state.location.lon}&zoom=9&size=600x600&markers=icon:large-blue-cutout%7C${this.state.location.lat},${this.state.location.lon}` 
+      } );
+
       }).catch(error => {
         console.log('ERROR!:', error);
       });
@@ -65,7 +77,7 @@ class UserForm extends React.Component {
         <Form onSubmit={this.handleForm}>
 
           <Form.Group className="mb-3">
-            <Form.Label>Search: </Form.Label>
+            <Form.Label>Search </Form.Label>
             <Form.Control onChange={this.handleChange} name="city" type="text" placeholder="Enter name of city here" /> 
           </Form.Group>
 
@@ -78,7 +90,7 @@ class UserForm extends React.Component {
           displayName = {this.state.location && this.state.location.display_name}
           latitude = {this.state.location && this.state.location.lat}
           longitude = {this.state.location && this.state.location.lon}
-        
+          staticMapURL = {this.state.location && this.state.staticMapURL}
         />
         
       </>  
