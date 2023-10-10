@@ -55,3 +55,8 @@ li {
 footer {
   margin-top: 3%;
 }
+
+.modal {
+  background-color: #FFCCBC;
+  color: red;
+}
