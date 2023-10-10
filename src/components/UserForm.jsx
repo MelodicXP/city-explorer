@@ -77,7 +77,7 @@ class UserForm extends React.Component {
         <Form onSubmit={this.handleForm}>
 
           <Form.Group className="mb-3">
-            <Form.Label>Search: </Form.Label>
+            <Form.Label>Search </Form.Label>
             <Form.Control onChange={this.handleChange} name="city" type="text" placeholder="Enter name of city here" /> 
           </Form.Group>
 

@@ -3,7 +3,7 @@ import './App.css'
 import Header from './components/Header'
 import UserForm from './components/UserForm.jsx'
 import Footer from './components/Footer'
-
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 
