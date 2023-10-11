@@ -1,10 +1,11 @@
-# PROJECT NAME
+# City Explorer
 
-**Author**: Your Name Goes Here
+**Author**: Melo Gonzalez
 **Version**: 1.0.0 (increment the patch/fix version number if you make more commits past your first submission)
 
 ## Overview
-<!-- Provide a high level overview of what this application is and why you are building it, beyond the fact that it's an assignment for this class. (i.e. What's your problem domain?) -->
+
+Application allows user to input name of city and display corresponding map.
 
 ## Getting Started
 
@@ -45,14 +46,40 @@ Any environment configuration steps.
     npm run build
 
 ## Architecture
-<!-- Provide a detailed description of the application design. What technologies (languages, libraries, etc) you're using, and any other relevant design information. -->
+
+Tools used were React Bootstrap, HTML, CSS, Axios, and LocationIQ API
+
+Data Flow  ![DataFlow](src/images/data-flow-image.jpg)
 
 ### Languages & tools
 
 ## Change Log
-<!-- Use this area to document the iterative changes made to your application as each feature is successfully implemented. Use time stamps. Here's an example:
 
-01-01-2001 4:59pm - Application now has a fully-functional express server, with a GET route for the location resource. -->
+### 10-11-2022
+
+Name of feature: Render error messages and refactor code
+
+Estimate of time needed to complete: 5 hrs
+
+Start time: 9:00 am
+
+Finish time: 3:00 pm
+
+Actual time needed to complete: 6 hrs
+
+### 10-10-2022
+
+Name of feature: Establish form and link to API
+
+Estimate of time needed to complete: 5 hrs
+
+Start time: 9:00 am
+
+Finish time: 3:00 pm
+
+Actual time needed to complete: 6 hrs
+
+### 10-09-2022
 
 Name of feature: Setting up
 
@@ -65,4 +92,5 @@ Finish time: 12:30 pm
 Actual time needed to complete: 2 1/2 hrs
 
 ## Credit and Collaborations
-<!-- Give credit (and a link) to other people or resources that helped you build this application. -->
+
+Chat GPT  
