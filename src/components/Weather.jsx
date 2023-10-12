@@ -16,7 +16,7 @@ class Weather extends React.Component {
   render () {
 
      // Write props passed in from parent in one line, instead of 'this.props' everytime used
-     let { serverResponseData } = this.props;
+     let { serverResponseData, } = this.props;
 
     return (
       
@@ -31,7 +31,7 @@ class Weather extends React.Component {
           <Row>
             {serverResponseData.map((item, index) => (
               <Col xs={6} md={4} key={index} className='forecast-data'>
-                <ul>
+                <ul className='forecast-data-ul'>
                   <li>Date: {item.date}</li>
                   <li>Conditions: {item.description}</li>
                 </ul>

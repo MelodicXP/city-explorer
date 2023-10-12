@@ -69,7 +69,13 @@ p {
 }
 
 .forecast-data {
-
  border: 3px solid white;
- 
+
+}
+
+.forecast-data-ul {
+  display: flex;
+  flex-direction: column;
+  /* border: 3px solid red; */
+  padding-left: 0%;
 }

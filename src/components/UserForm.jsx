@@ -19,8 +19,10 @@ class UserForm extends React.Component {
       location: null, // API location data based on query
       staticMapURL: null, // Static map url based on location
       showErrorModal: false, // Show error modal when true
-      errorMessage: '', // Show 4xx error message in modal
-      serverResponseData: [],
+      errorMessage: '', // Show 4xx error message in modal title
+      errorMessageBody: '', // Message to show in body of modal
+      serverResponseData: [], // Holds forecast data from server
+      getForecastDataError: false, // Track errors in getForecastData()
     };
   }
 
@@ -37,59 +39,74 @@ class UserForm extends React.Component {
     // Promise.all() - allows for multiple promises to complete and then proceed with 'then' processing once all promises resolved
     Promise.all([this.makeApiRequest(us1Url), this.makeApiRequest(eu1Url)])
       .then( () => {
-
-        this.getForecastData(); // Make call to server using query data
-
-      })
-      .then( () => {
-
-        // After getForecastData has finished and updated the state, pass the data to Weather
-        this.setState((prevState) => ({
-          serverResponseData: prevState.serverResponseData, // You can leave this line or remove it if you want.
-        }));
+        
+        if (this.state.showErrorModal) { // If showErrorModal true, breakout of function
+          return;
+        } else { // Else get forecast data
+          this.getForecastData(); // Make call to server using query data
+        }
 
       });
-
-    
   };
-
-
-  getForecastData = async () => {
-    const { location } = this.state; // Access location property/data of this.state.location
-
-    let displayName = location.display_name; // Retrieve display name of city (City,County, State)
-
-    let cityNameOnly = displayName.split(',')[0].trim(); // Isolate name of city only, (first word before a comma)
-
-    console.log(cityNameOnly);
-
-    const response = await axios.get(`${SERVER}/weather?city_name=${cityNameOnly}&lat=${location.lat}&lon=${location.lon}`);
-
-    this.setState({ serverResponseData: response.data }, () => {
-      console.log(this.state.serverResponseData); // This will log the updated state.
-    });
-
-
-  };
-
 
   // Function to make API request and handle response/error
-  makeApiRequest = (url) => {
-    return axios.get(url)
-      .then((response) => {
-        console.log('SUCCESS!: ', response.data);
-        this.setState({ location: response.data[0] }); // Set state of location to first element in response.data array
-        this.updateStaticMapURL();
-      })
-      .catch((error) => {
-        console.log('ERROR!:', error);
-        this.setState({ errorMessage: error.message }); // Capture error message from console log and set to errorMessage variable
+    makeApiRequest = (url) => {
+      return axios.get(url)
+        .then((response) => {
 
-        // Check if showErrorModal is already true before toggling it (since passing in two urls)
-        if (!this.state.showErrorModal) {
-        this.toggleErrorModal();
-      }
-      });
+          console.log('SUCCESS!: ', response.data);
+          this.setState({ location: response.data[0] }); // Set state of location to first element in response.data array
+          this.updateStaticMapURL();
+
+        })
+        // Catch error and toggle errorModal
+        .catch((error) => {
+
+          console.log('ERROR!:', error);
+
+          this.setState({ 
+            errorMessage: error.message, 
+            errorMessageBody: error.response.data.error, 
+          }); // Capture error message from console log and set to errorMessage variable
+
+          // Check if showErrorModal is already true before toggling it (since passing in two urls)
+          if (!this.state.showErrorModal) {
+            this.toggleErrorModal();
+          }
+
+        });
+    };
+
+
+  // Function - retrieve forecast data from server
+  getForecastData = async () => {
+    const { location } = this.state; // Access location property/data of this.state.location
+    let displayName = location.display_name; // Retrieve display name of city (City,County, State)
+    let cityNameOnly = displayName.split(',')[0].trim(); // Isolate name of city only, (first word before a comma)
+
+    try {
+
+      const response = await axios.get(`${SERVER}/weather?city_name=${cityNameOnly}&lat=${location.lat}&lon=${location.lon}`);
+      
+      // If the request is successful, update the state with the response data
+      this.setState({ serverResponseData: response.data, errorMessage: '' });
+
+    } catch (error) {
+
+      // If there's an error, catch it and set errorMessage state
+      console.error('Server Error:', error);
+
+      this.setState({ 
+        errorMessage: error.message, 
+        serverResponseData: [],
+        errorMessageBody: error.response.data.error, 
+        getForecastDataError: true, // Set getForecastDataError to true
+       });
+
+       this.toggleErrorModal();
+
+    }
+
   };
 
 
@@ -115,6 +132,15 @@ class UserForm extends React.Component {
     this.setState((prevState) => ({
       showErrorModal: !prevState.showErrorModal,
     }));
+  };
+
+
+  // Function to close modal
+  closeModal = () => {
+    this.setState({
+      showErrorModal: false,
+      getForecastDataError: false,
+    });
   };
   
 
@@ -159,7 +185,7 @@ class UserForm extends React.Component {
           </Modal.Header>
 
           <Modal.Body>
-            Please enter a valid name of the city.
+              {this.state.errorMessageBody}
           </Modal.Body>
 
           <Modal.Footer>
