@@ -43,13 +43,15 @@
   color: #888;
 }
 
+
 li {
   list-style: none;
-  margin-top: 2%;
+  margin-top: 1.5%;
+  font-size: 1.5vw;
 }
 
 .map-image {
-  margin-top: 5%;
+  border:3px solid white;
 }
 
 footer {
@@ -59,4 +61,15 @@ footer {
 .modal {
   background-color: #FFCCBC;
   color: red;
+}
+
+p {
+  padding-top: 2%;
+  font-size: 2vw;
+}
+
+.forecast-data {
+
+ border: 3px solid white;
+ 
 }
