@@ -47,13 +47,31 @@ Any environment configuration steps.
 
 ## Architecture
 
-Tools used were React Bootstrap, HTML, CSS, Axios, and LocationIQ API
+### Data Flow
 
-Data Flow  ![DataFlow](src/images/data-flow-image.jpg)
+Data Flow Lab 06  ![DataFlow](src/images/data-flow-image.jpg)
 
 ### Languages & tools
 
+Tools used were React Bootstrap, HTML, CSS, Axios, and LocationIQ API
+
+### Lighthouse Scores
+
+LightHouse Score 10-18-2023 ![DataFlow](src/images/Lighthouse10-18-2023.png)
+
 ## Change Log
+
+### 10-18-2022
+
+Name of feature: Connect to local server API
+
+Estimate of time needed to complete: 5 hrs
+
+Start time: 8:30 am
+
+Finish time: 1:30 pm
+
+Actual time needed to complete: 5 hrs
 
 ### 10-11-2022
 

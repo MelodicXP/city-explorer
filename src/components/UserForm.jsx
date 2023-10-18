@@ -3,9 +3,11 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import axios from 'axios';
 import Explorer from './Explorer';
+import Weather from './Weather';
 import Modal from 'react-bootstrap/Modal';
 
 const API_KEY = import.meta.env.VITE_LOCATIONIQ_API_KEY;
+const SERVER = import.meta.env.VITE_SERVER;
 
 class UserForm extends React.Component {
   constructor(props) {
@@ -17,35 +19,96 @@ class UserForm extends React.Component {
       location: null, // API location data based on query
       staticMapURL: null, // Static map url based on location
       showErrorModal: false, // Show error modal when true
-      errorMessage: '', // Show 4xx error message in modal
+      errorMessage: '', // Show 4xx error message in modal title
+      errorMessageBody: '', // Message to show in body of modal
+      serverResponseData: [], // Holds forecast data from server
+      getForecastDataError: false, // Track errors in getForecastData()
     };
   }
 
-  // Function to toggle value of showErrorModal (true and false)
-  toggleErrorModal = () => {
-    this.setState((prevState) => ({
-      showErrorModal: !prevState.showErrorModal,
-    }));
+
+  // Function to handle form submission
+  handleForm = (event) => {
+    console.log('Form Submitted');
+    event.preventDefault();
+
+    // Make API requests
+    const us1Url = `https://us1.locationiq.com/v1/search?key=${API_KEY}&q=${this.state.searchQuery}&format=json`;
+    const eu1Url = `https://eu1.locationiq.com/v1/search?key=${API_KEY}&q=${this.state.searchQuery}&format=json`;
+
+    // Promise.all() - allows for multiple promises to complete and then proceed with 'then' processing once all promises resolved
+    Promise.all([this.makeApiRequest(us1Url), this.makeApiRequest(eu1Url)])
+      .then( () => {
+        
+        if (this.state.showErrorModal) { // If showErrorModal true, breakout of function
+          return;
+        } else { // Else get forecast data
+          this.getForecastData(); // Make call to server using query data
+        }
+
+      });
   };
 
   // Function to make API request and handle response/error
-  makeApiRequest = (url) => {
-    return axios.get(url)
-      .then((response) => {
-        console.log('SUCCESS!: ', response.data);
-        this.setState({ location: response.data[0] }); // Set state of location to first element in response.data array
-        this.updateStaticMapURL();
-      })
-      .catch((error) => {
-        console.log('ERROR!:', error);
-        this.setState({ errorMessage: error.message }); // Capture error message from console log and set to errorMessage variable
+    makeApiRequest = (url) => {
+      return axios.get(url)
+        .then((response) => {
 
-        // Check if showErrorModal is already true before toggling it (since passing in two urls)
-        if (!this.state.showErrorModal) {
-        this.toggleErrorModal();
-      }
-      });
+          console.log('SUCCESS!: ', response.data);
+          this.setState({ location: response.data[0] }); // Set state of location to first element in response.data array
+          this.updateStaticMapURL();
+
+        })
+        // Catch error and toggle errorModal
+        .catch((error) => {
+
+          console.log('ERROR!:', error);
+
+          this.setState({ 
+            errorMessage: error.message, 
+            errorMessageBody: error.response.data.error, 
+          }); // Capture error message from console log and set to errorMessage variable
+
+          // Check if showErrorModal is already true before toggling it (since passing in two urls)
+          if (!this.state.showErrorModal) {
+            this.toggleErrorModal();
+          }
+
+        });
+    };
+
+
+  // Function - retrieve forecast data from server
+  getForecastData = async () => {
+    const { location } = this.state; // Access location property/data of this.state.location
+    let displayName = location.display_name; // Retrieve display name of city (City,County, State)
+    let cityNameOnly = displayName.split(',')[0].trim(); // Isolate name of city only, (first word before a comma)
+
+    try {
+
+      const response = await axios.get(`${SERVER}/weather?city_name=${cityNameOnly}&lat=${location.lat}&lon=${location.lon}`);
+      
+      // If the request is successful, update the state with the response data
+      this.setState({ serverResponseData: response.data, errorMessage: '' });
+
+    } catch (error) {
+
+      // If there's an error, catch it and set errorMessage state
+      console.error('Server Error:', error);
+
+      this.setState({ 
+        errorMessage: error.message, 
+        serverResponseData: [],
+        errorMessageBody: error.response.data.error, 
+        getForecastDataError: true, // Set getForecastDataError to true
+       });
+
+       this.toggleErrorModal();
+
+    }
+
   };
+
 
   // Function to update staticMapURL based on location
   updateStaticMapURL() {
@@ -57,23 +120,30 @@ class UserForm extends React.Component {
     }
   }
 
-  // Function to handle form submission
-  handleForm = (event) => {
-    console.log('Form Submitted');
-    event.preventDefault();
-
-    // Make API requests
-    const us1Url = `https://us1.locationiq.com/v1/search?key=${API_KEY}&q=${this.state.searchQuery}&format=json`;
-    const eu1Url = `https://eu1.locationiq.com/v1/search?key=${API_KEY}&q=${this.state.searchQuery}&format=json`;
-
-    // Promise.all() - allows for multiple promises to complete and then proceed with processing once all promises resolved
-    Promise.all([this.makeApiRequest(us1Url), this.makeApiRequest(eu1Url)])
-  };
 
   // Update state of query to value of input field (input by user)
   handleChange = (event) => {
     this.setState({ searchQuery: event.target.value });
   };
+
+
+  // Function to toggle value of showErrorModal (true and false)
+  toggleErrorModal = () => {
+    this.setState((prevState) => ({
+      showErrorModal: !prevState.showErrorModal,
+    }));
+  };
+
+
+  // Function to close modal
+  closeModal = () => {
+    this.setState({
+      showErrorModal: false,
+      getForecastDataError: false,
+    });
+  };
+  
+
 
   render() {
     return (
@@ -115,7 +185,7 @@ class UserForm extends React.Component {
           </Modal.Header>
 
           <Modal.Body>
-            Please enter a valid name of the city.
+              {this.state.errorMessageBody}
           </Modal.Body>
 
           <Modal.Footer>
@@ -134,6 +204,13 @@ class UserForm extends React.Component {
           longitude={this.state.location && this.state.location.lon}
           staticMapURL={this.state.location && this.state.staticMapURL}
         />
+
+        <Weather 
+        
+          serverResponseData={this.state.serverResponseData && this.state.serverResponseData}
+        
+        />
+
       </>
     );
   }

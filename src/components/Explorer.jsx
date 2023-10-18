@@ -23,15 +23,15 @@ class Explorer extends React.Component {
       
       <main>
 
-        <ul>
+        <ul className='city-data'>
           <li>{displayName}</li>
             {latitude && <li>latitude: {latitude}</li>}
             {longitude && <li>longitude: {longitude}</li>}
         </ul>
 
         <Container>
-          <Row>
-            <Col xs={6} md={4}>
+          <Row className='map-row'>
+            <Col xs={12} md={12} className='map-column'>
 
               {staticMapURL && (
                 <Image 
