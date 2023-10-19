@@ -62,7 +62,19 @@ LightHouse Score 10-18-2023 ![DataFlow](src/images/Lighthouse10-18-2023.png)
 
 ## Change Log
 
-### 10-18-2022
+### 10-23 - 2023
+
+Name of feature: Connect to local server API's moviesDB and weatherBit
+
+Estimate of time needed to complete: 2 hrs
+
+Start time: 5:30pm am
+
+Finish time: 6:00 pm
+
+Actual time needed to complete: 5 hrs
+
+### 10-18-2023
 
 Name of feature: Connect to local server API
 
@@ -74,7 +86,7 @@ Finish time: 1:30 pm
 
 Actual time needed to complete: 5 hrs
 
-### 10-11-2022
+### 10-11-2023
 
 Name of feature: Render error messages and refactor code
 
@@ -86,7 +98,7 @@ Finish time: 3:00 pm
 
 Actual time needed to complete: 6 hrs
 
-### 10-10-2022
+### 10-10-2023
 
 Name of feature: Establish form and link to API
 
@@ -98,7 +110,7 @@ Finish time: 3:00 pm
 
 Actual time needed to complete: 6 hrs
 
-### 10-09-2022
+### 10-09-2023
 
 Name of feature: Setting up
 
