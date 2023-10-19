@@ -51,6 +51,7 @@ Any environment configuration steps.
 
 Data Flow Lab 06  ![DataFlow](src/images/data-flow-image.jpg)
 Data Flow Lab 07   ![DataFlow](src/images/dataflow10182023.jpg)
+Data Flow Lab 08   ![DataFlow](src/images/data-flow-lab08.jpg)
 
 ### Languages & tools
 
