@@ -80,19 +80,16 @@ class UserForm extends React.Component {
 
   // Function - retrieve forecast data from server
   getForecastData = async () => {
+
     const { location } = this.state; // Access location property/data of this.state.location
-    let displayName = location.display_name; // Retrieve display name of city (City,County, State)
-    let cityNameOnly = displayName.split(',')[0].trim(); // Isolate name of city only, (first word before a comma)
 
     try {
-
-      const response = await axios.get(`${SERVER}/weather?city_name=${cityNameOnly}&lat=${location.lat}&lon=${location.lon}`);
+      const response = await axios.get(`${SERVER}/weather?lat=${location.lat}&lon=${location.lon}`);
       
       // If the request is successful, update the state with the response data
       this.setState({ serverResponseData: response.data, errorMessage: '' });
 
     } catch (error) {
-
       // If there's an error, catch it and set errorMessage state
       console.error('Server Error:', error);
 
@@ -143,7 +140,6 @@ class UserForm extends React.Component {
     });
   };
   
-
 
   render() {
     return (
