@@ -6,8 +6,8 @@ import Explorer from './Explorer';
 import Weather from './Weather';
 import Modal from 'react-bootstrap/Modal';
 
-const API_KEY = import.meta.env.VITE_LOCATIONIQ_API_KEY;
-const SERVER = import.meta.env.VITE_SERVER;
+const API_KEY = import.meta.env.VITE_LOCATIONIQ_API_KEY; // API Key
+const SERVER = import.meta.env.VITE_SERVER; // Server 
 
 class UserForm extends React.Component {
   constructor(props) {
