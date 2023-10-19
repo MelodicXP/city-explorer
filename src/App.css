@@ -70,7 +70,9 @@ p {
 
 .forecast-data {
  border: 2px solid white;
-
+ border-radius: 2vw;
+ margin-top: 10%;
+ 
 }
 
 .forecast-data-ul {
@@ -83,6 +85,7 @@ p {
 
 .movie-data {
   border: 2px solid white;
+  border-radius: 2vw;
 }
 
 .movie-data ul {
@@ -103,8 +106,15 @@ p {
   text-align: center;
 }
 
+#movie-title {
+  text-align: center;
+  width: 100%;
+  /* border: 3px solid red; */
+  font-size: 2vw;
+}
+
 #movie-image {
-  width: 90%;
+  width: 100%;
   padding-left: 0%;
   text-align: center;
 }

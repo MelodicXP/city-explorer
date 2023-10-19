@@ -119,10 +119,13 @@ class UserForm extends React.Component {
   // Function - retrieve movie data from server
   getMovieData = async () => {
 
-    // const { location } = this.state; // Access location property/data of this.state.location
+    const { location } = this.state; // Access location property/data of this.state.location
+    let displayName = location.display_name; // Retrieve display name of city (City,County, State)
+    let cityNameOnly = displayName.split(',')[0].trim(); // Isolate name of city only, (first word before a comma)
+
 
     try {
-      const response = await axios.get(`${SERVER}/movies`);
+      const response = await axios.get(`${SERVER}/movies?searchQuery=${cityNameOnly}`);
       
       // If the request is successful, update the state with the response data
       this.setState({ serverMovieResponseData: response.data, errorMessage: '' });

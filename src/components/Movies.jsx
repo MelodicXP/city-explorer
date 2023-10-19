@@ -28,11 +28,11 @@ class Movies extends React.Component {
         ) : null}
 
         <Container>
-          <Row>
+          <Row className='row'>
             {serverMovieResponseData.map((item, index) => (
-              <Col xs={6} md={6} key={index} className='movie-data'>
+              <Col xs={6} md={4} key={index} className='movie-data'>
                 <ul className='forecast-data-ul'>
-                  <li>Title: {item.title}</li>
+                  <li id='movie-title'>{item.title}</li>
                   <li>Overview: {item.overview}</li>
                   <li>Average Votes: {item.voteAverage}</li>
                   <li>Total Votes: {item.voteCount}</li>
