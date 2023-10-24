@@ -4,6 +4,7 @@ import Button from 'react-bootstrap/Button';
 import axios from 'axios';
 import Explorer from './Explorer';
 import Weather from './Weather';
+import Movies from './Movies';
 import Modal from 'react-bootstrap/Modal';
 
 const API_KEY = import.meta.env.VITE_LOCATIONIQ_API_KEY;
@@ -23,6 +24,7 @@ class UserForm extends React.Component {
       errorMessageBody: '', // Message to show in body of modal
       serverResponseData: [], // Holds forecast data from server
       getForecastDataError: false, // Track errors in getForecastData()
+      serverMovieResponseData: [],
     };
   }
 
@@ -43,9 +45,16 @@ class UserForm extends React.Component {
         if (this.state.showErrorModal) { // If showErrorModal true, breakout of function
           return;
         } else { // Else get forecast data
-          this.getForecastData(); // Make call to server using query data
+          this.getForecastData() // Make call to server using query data
+            .then(() => {
+              
+              if (this.state.showErrorModal) {
+                return;
+              } else {
+                this.getMovieData(); // Make call to server to get movie data
+              }
+            });
         }
-
       });
   };
 
@@ -80,19 +89,16 @@ class UserForm extends React.Component {
 
   // Function - retrieve forecast data from server
   getForecastData = async () => {
+
     const { location } = this.state; // Access location property/data of this.state.location
-    let displayName = location.display_name; // Retrieve display name of city (City,County, State)
-    let cityNameOnly = displayName.split(',')[0].trim(); // Isolate name of city only, (first word before a comma)
 
     try {
-
-      const response = await axios.get(`${SERVER}/weather?city_name=${cityNameOnly}&lat=${location.lat}&lon=${location.lon}`);
+      const response = await axios.get(`${SERVER}/weather?lat=${location.lat}&lon=${location.lon}`);
       
       // If the request is successful, update the state with the response data
       this.setState({ serverResponseData: response.data, errorMessage: '' });
 
     } catch (error) {
-
       // If there's an error, catch it and set errorMessage state
       console.error('Server Error:', error);
 
@@ -108,6 +114,39 @@ class UserForm extends React.Component {
     }
 
   };
+
+
+  // Function - retrieve movie data from server
+  getMovieData = async () => {
+
+    const { location } = this.state; // Access location property/data of this.state.location
+    let displayName = location.display_name; // Retrieve display name of city (City,County, State)
+    let cityNameOnly = displayName.split(',')[0].trim(); // Isolate name of city only, (first word before a comma)
+
+
+    try {
+      const response = await axios.get(`${SERVER}/movies?searchQuery=${cityNameOnly}`);
+      
+      // If the request is successful, update the state with the response data
+      this.setState({ serverMovieResponseData: response.data, errorMessage: '' });
+
+    } catch (error) {
+      // If there's an error, catch it and set errorMessage state
+      console.error('Server Error:', error);
+
+      this.setState({ 
+        errorMessage: error.message, 
+        serverResponseData: [],
+        errorMessageBody: error.response.data.error, 
+        getForecastDataError: true, // Set getForecastDataError to true
+       });
+
+       this.toggleErrorModal();
+
+    }
+
+  };
+  
 
 
   // Function to update staticMapURL based on location
@@ -143,7 +182,6 @@ class UserForm extends React.Component {
     });
   };
   
-
 
   render() {
     return (
@@ -208,6 +246,13 @@ class UserForm extends React.Component {
         <Weather 
         
           serverResponseData={this.state.serverResponseData && this.state.serverResponseData}
+        
+        />
+
+        <Movies 
+        
+          serverMovieResponseData = {this.state.serverMovieResponseData && this.state.serverMovieResponseData}
+          cityName = {this.state.location && this.state.location.display_name}
         
         />
 
