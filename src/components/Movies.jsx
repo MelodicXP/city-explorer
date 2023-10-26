@@ -1,7 +1,7 @@
 import React from 'react';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
+import Movie from './Movie';
 
 
 class Movies extends React.Component {
@@ -29,18 +29,18 @@ class Movies extends React.Component {
 
         <Container>
           <Row className='row'>
-            {serverMovieResponseData.map((item, index) => (
-              <Col xs={6} md={4} key={index} className='movie-data'>
-                <ul className='forecast-data-ul'>
-                  <li id='movie-title'>{item.title}</li>
-                  <li>Overview: {item.overview}</li>
-                  <li>Average Votes: {item.voteAverage}</li>
-                  <li>Total Votes: {item.voteCount}</li>
-                  <li>Popularity: {item.popularity}</li>
-                  <li>Release Date: {item.releaseDate}</li>
-                  <li id='movie-li'><img id='movie-image'src= {`https://www.themoviedb.org/t/p/w600_and_h900_bestv2/${item.imageURL}`} alt={`Movies set in ${cityName.split(',')[0]}`}/></li>
-                </ul>
-              </Col>
+          {serverMovieResponseData.map((item, index) => (
+              // Movie component here
+              <Movie
+                key={index}
+                title={item.title}
+                overview={item.overview}
+                voteAverage={item.voteAverage}
+                voteCount={item.voteCount}
+                popularity={item.popularity}
+                releaseDate={item.releaseDate}
+                imageURL={`https://www.themoviedb.org/t/p/w600_and_h900_bestv2/${item.imageURL}`}
+              />
             ))}
           </Row>
         </Container>

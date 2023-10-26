@@ -63,7 +63,19 @@ LightHouse Score 10-18-2023 ![DataFlow](src/images/Lighthouse10-18-2023.png)
 
 ## Change Log
 
-### 10-24-2023
+### 10-27-2023 - Lab 09
+
+Name of feature: Lab 09 - Componentize - create movie and weather day component
+
+Estimate of time needed to complete: 2 hrs
+
+Start time: 12:00 pm
+
+Finish time: 1:00 pm
+
+Actual time needed to complete: 1 hour
+
+### 10-24-2023 - Lab 08
 
 Name of feature: Lab 08 - Connect to local server API's moviesDB and weatherBit
 
@@ -75,7 +87,7 @@ Finish time: 9:00 am
 
 Actual time needed to complete: 1 hour 30 minutes
 
-### 10-23-2023
+### 10-23-2023 - Lab 08
 
 Name of feature: Lab 08 - Connect to local server API's moviesDB and weatherBit
 
@@ -85,9 +97,9 @@ Start time: 5:30pm am
 
 Finish time: 6:00 pm
 
-Actual time needed to complete: In process
+Actual time needed to complete: 30 minutes
 
-### 10-18-2023
+### 10-18-2023 - Lab 07
 
 Name of feature: Lab 07 - Connect to local server API
 
@@ -99,7 +111,7 @@ Finish time: 1:30 pm
 
 Actual time needed to complete: 5 hrs
 
-### 10-11-2023
+### 10-11-2023 - Lab 06
 
 Name of feature: Lab 06 - Render error messages and refactor code
 

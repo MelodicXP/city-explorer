@@ -1,7 +1,7 @@
 import React from 'react';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
+import WeatherDay from './WeatherDay';
 
 
 class Weather extends React.Component {
@@ -29,13 +29,13 @@ class Weather extends React.Component {
 
         <Container>
           <Row>
-            {serverResponseData.map((item, index) => (
-              <Col xs={6} md={4} key={index} className='forecast-data'>
-                <ul className='forecast-data-ul'>
-                  <li>Date: {item.date}</li>
-                  <li>Conditions: {item.description}</li>
-                </ul>
-              </Col>
+          {serverResponseData.map((item, index) => (
+              // WeatherDay component here
+              <WeatherDay
+                key={index}
+                date={item.date}
+                description={item.description}
+              />
             ))}
           </Row>
         </Container>
