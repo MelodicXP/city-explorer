@@ -31,7 +31,7 @@ class UserForm extends React.Component {
 
   // Function to handle form submission
   handleForm = (event) => {
-    console.log('Form Submitted');
+    
     event.preventDefault();
 
     const { searchQuery } = this.state;
@@ -67,17 +67,12 @@ class UserForm extends React.Component {
     makeApiRequest = (url) => {
       return axios.get(url)
         .then((response) => {
-
-          console.log('SUCCESS!: ', response.data);
           this.setState({ location: response.data[0] }); // Set state of location to first element in response.data array
           this.updateStaticMapURL();
 
         })
         // Catch error and toggle errorModal
         .catch((error) => {
-
-          console.log('ERROR!:', error);
-
           this.setState({ 
             errorMessage: error.message, 
             errorMessageBody: error.response.data.error, 
