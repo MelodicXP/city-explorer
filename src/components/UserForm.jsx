@@ -34,12 +34,17 @@ class UserForm extends React.Component {
     console.log('Form Submitted');
     event.preventDefault();
 
+    const { searchQuery } = this.state;
+
     // Make API requests
-    const us1Url = `https://us1.locationiq.com/v1/search?key=${API_KEY}&q=${this.state.searchQuery}&format=json`;
-    const eu1Url = `https://eu1.locationiq.com/v1/search?key=${API_KEY}&q=${this.state.searchQuery}&format=json`;
+    const us1Url = `https://us1.locationiq.com/v1/search?key=${API_KEY}&q=${searchQuery}&format=json`;
+    const eu1Url = `https://eu1.locationiq.com/v1/search?key=${API_KEY}&q=${searchQuery}&format=json`;
 
     // Promise.all() - allows for multiple promises to complete and then proceed with 'then' processing once all promises resolved
-    Promise.all([this.makeApiRequest(us1Url), this.makeApiRequest(eu1Url)])
+    Promise.all([
+      this.makeApiRequest(us1Url), 
+      this.makeApiRequest(eu1Url)
+    ])
       .then( () => {
         
         if (this.state.showErrorModal) { // If showErrorModal true, breakout of function
@@ -147,7 +152,6 @@ class UserForm extends React.Component {
 
   };
   
-
 
   // Function to update staticMapURL based on location
   updateStaticMapURL() {
