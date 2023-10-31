@@ -94,9 +94,15 @@ class UserForm extends React.Component {
 
     try {
       const response = await axios.get(`${SERVER}/weather?lat=${location.lat}&lon=${location.lon}`);
+
+      const weather = response.data.data;
+      const weatherTimeStamp = response.data.timestamp;
       
       // If the request is successful, update the state with the response data
-      this.setState({ serverResponseData: response.data, errorMessage: '' });
+      this.setState({ 
+        serverResponseData: weather,
+        serverWeatherTimeStamp: weatherTimeStamp, 
+        errorMessage: '' });
 
     } catch (error) {
       // If there's an error, catch it and set errorMessage state
@@ -126,9 +132,15 @@ class UserForm extends React.Component {
 
     try {
       const response = await axios.get(`${SERVER}/movies?searchQuery=${cityNameOnly}`);
+
+      const movies = response.data.data;
+      const movieTimeStamp = response.data.timestamp;
       
       // If the request is successful, update the state with the response data
-      this.setState({ serverMovieResponseData: response.data, errorMessage: '' });
+      this.setState({ 
+        serverMovieResponseData: movies, 
+        serverMovieTimestamp: movieTimeStamp,
+        errorMessage: '' });
 
     } catch (error) {
       // If there's an error, catch it and set errorMessage state
@@ -245,12 +257,14 @@ class UserForm extends React.Component {
         <Weather 
         
           serverResponseData={this.state.serverResponseData && this.state.serverResponseData}
+          serverWeatherTimeStamp = {this.state.serverResponseData && this.state.serverWeatherTimeStamp}
         
         />
 
         <Movies 
         
           serverMovieResponseData = {this.state.serverMovieResponseData && this.state.serverMovieResponseData}
+          serverMovieTimestamp = {this.state.serverMovieResponseData && this.state.serverMovieTimestamp}
           cityName = {this.state.location && this.state.location.display_name}
         
         />
