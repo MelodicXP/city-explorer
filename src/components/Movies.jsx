@@ -15,16 +15,23 @@ class Movies extends React.Component {
 
   render () {
 
-     // Write props passed in from parent in one line, instead of 'this.props' everytime used
-     let { serverMovieResponseData, cityName} = this.props;
+    // Write props passed in from parent in one line, instead of 'this.props' everytime used
+    let { serverMovieResponseData, cityName, serverMovieTimestamp} = this.props;
+    let date = new Date(serverMovieTimestamp);
+    // Extract the components of timestamp (timestamp is in ms, convert to readable format)
+    let day = date.getDate();       // Day of the month
+    let month = date.getMonth() + 1; // Months are zero-based in JS
+    let year = date.getFullYear();  // Year
 
     return (
       
       <>
         {serverMovieResponseData.length > 0 ? (
-
-          <p>{`Movies set in ${cityName.split(',')[0]}`}</p>
-          
+          <p>
+            {`Movies set in ${cityName.split(',')[0]}`} <br />
+            {`as of ${month}/${day}/${year}`} <br />
+            {'(list updates every 24 hours)'}
+          </p>
         ) : null}
 
         <Container>
