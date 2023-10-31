@@ -63,6 +63,18 @@ LightHouse Score 10-18-2023 ![DataFlow](src/images/Lighthouse10-18-2023.png)
 
 ## Change Log
 
+### 10-31-2023 - Lab 10
+
+Name of feature: Display timestamp from backedn
+
+Estimate of time needed to complete: 1 hrs
+
+Start time: 11:00 am
+
+Finish time: 11:30 am
+
+Actual time needed to complete: 30 minutes
+
 ### 10-27-2023 - Lab 09
 
 Name of feature: Lab 09 - Componentize - create movie and weather day component
