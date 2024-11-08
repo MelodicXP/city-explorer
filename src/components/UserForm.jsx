@@ -15,6 +15,17 @@ const UserForm = () => {
   const [cityName, setCityName] = useState('');
   const [userInput, setUserInput] = useState('');
 
+  const handleUserInput = (event) => {
+    setUserInput(event.target.value);
+  }
+  
+  const handleFormSubmit = (event) => {
+    event.preventDefault();
+    if (userInput) {
+      getLocationInfo(API_KEY, userInput);
+    }
+  };
+
   // Function to fetch location info based on user input and API key
   const getLocationInfo = async (API_KEY, city) => {
     try {
@@ -37,17 +48,6 @@ const UserForm = () => {
       console.error('Error fetching location info:', error);
     }
   };
-
-  const handleFormSubmit = (event) => {
-    event.preventDefault();
-    if (userInput) {
-      getLocationInfo(API_KEY, userInput);
-    }
-  };
-
-  const handleUserInput = (event) => {
-    setUserInput(event.target.value);
-  }
 
   return (
     <>
