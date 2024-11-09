@@ -4,6 +4,7 @@ import Form from 'react-bootstrap/Form';
 import { useState } from 'react';
 
 import CityInfo from './CityInfo';
+import ErrorModal from './ErrorModal';
 import '../css/userForm.css';
 
 const API_KEY = import.meta.env.VITE_LOCATIONIQ_API_KEY;
@@ -88,6 +89,7 @@ const UserForm = () => {
           />
         )}
       </div>
+      <ErrorModal />
     </>
   );
 };
