@@ -70,6 +70,7 @@ const UserForm = () => {
           Explore!
         </Button>
       </Form>
+      
       {hasValidCityData() && ( // render city info only if valid city data 
         <CityInfo cityName={cityName} latitude={latitude} longitude={longitude} />
       )}
