@@ -4,6 +4,7 @@ import Form from 'react-bootstrap/Form';
 import { useState } from 'react';
 
 import CityInfo from './CityInfo';
+import '../css/userForm.css';
 
 const API_KEY = import.meta.env.VITE_LOCATIONIQ_API_KEY;
 
@@ -59,7 +60,7 @@ const UserForm = () => {
 
   return (
     <>
-      <div>
+      <div className='form-container'>
         <Form onSubmit={handleFormSubmit}>
           <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Label>Search</Form.Label>
@@ -77,7 +78,7 @@ const UserForm = () => {
         </Form>
       </div>
 
-      <div>
+      <div className='card-container'>
         {hasValidCityData() && ( // render city info only if valid city data 
           <CityInfo 
             cityName={cityName} 
