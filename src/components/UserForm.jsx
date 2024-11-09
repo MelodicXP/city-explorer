@@ -49,6 +49,10 @@ const UserForm = () => {
     }
   };
 
+  const hasValidCityData = () => {
+    return cityName, latitude, longitude; // check if truthy
+  };
+
   return (
     <>
       <Form onSubmit={handleFormSubmit}>
@@ -66,7 +70,9 @@ const UserForm = () => {
           Explore!
         </Button>
       </Form>
-      <CityInfo cityName={cityName} latitude={latitude} longitude={longitude} />
+      {hasValidCityData() && ( // render city info only if valid city data 
+        <CityInfo cityName={cityName} latitude={latitude} longitude={longitude} />
+      )}
     </>
   );
 };
