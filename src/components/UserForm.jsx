@@ -14,6 +14,7 @@ const UserForm = () => {
   const [longitude, setLongitude] = useState('');
   const [cityName, setCityName] = useState('');
   const [userInput, setUserInput] = useState('');
+  const [mapImageUrl, setMapImageUrl] = useState('');
 
   const handleUserInput = (event) => {
     setUserInput(event.target.value);
@@ -44,36 +45,48 @@ const UserForm = () => {
       setLatitude(latitude);
       setLongitude(longitude);
       
+      // Set image url after latitude and longitude are recieved
+      const mapUrl = `https://maps.locationiq.com/v3/staticmap?key=${API_KEY}&center=${latitude},${longitude}&zoom=9&size=600x400&markers=icon:large-blue-cutout%7C${latitude},${longitude}`;
+      setMapImageUrl(mapUrl);
     } catch (error) {
       console.error('Error fetching location info:', error);
     }
   };
 
   const hasValidCityData = () => {
-    return cityName, latitude, longitude; // check if truthy
+    return cityName && latitude && longitude && mapImageUrl; // return true only if all values are truthy
   };
 
   return (
     <>
-      <Form onSubmit={handleFormSubmit}>
-        <Form.Group className="mb-3" controlId="formBasicEmail">
-          <Form.Label>Search</Form.Label>
-          <Form.Control 
-            type="text" 
-            placeholder="Enter name of city here"
-            value={userInput}
-            onChange={handleUserInput} 
-          />
-        </Form.Group>
+      <div>
+        <Form onSubmit={handleFormSubmit}>
+          <Form.Group className="mb-3" controlId="formBasicEmail">
+            <Form.Label>Search</Form.Label>
+            <Form.Control 
+              type="text" 
+              placeholder="Enter name of city here"
+              value={userInput}
+              onChange={handleUserInput} 
+            />
+          </Form.Group>
 
-        <Button variant="primary" type="submit">
-          Explore!
-        </Button>
-      </Form>
-      
-      {hasValidCityData() && ( // render city info only if valid city data 
-        <CityInfo cityName={cityName} latitude={latitude} longitude={longitude} />
-      )}
+          <Button variant="primary" type="submit" className='mb-3'>
+            Explore!
+          </Button>
+        </Form>
+      </div>
+
+      <div>
+        {hasValidCityData() && ( // render city info only if valid city data 
+          <CityInfo 
+            cityName={cityName} 
+            latitude={latitude} 
+            longitude={longitude} 
+            mapImageUrl={mapImageUrl}
+          />
+        )}
+      </div>
     </>
   );
 };

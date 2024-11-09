@@ -2,11 +2,11 @@ import PropTypes from 'prop-types';
 import Card from 'react-bootstrap/Card';
 
 const CityInfo = (props) => {
-  const { cityName, latitude, longitude } = props;
+  const { cityName, latitude, longitude, mapImageUrl } = props;
 
   return (
-    <Card style={{ width: '18rem' }}>
-      <Card.Img variant="top" src="holder.js/100px180" />
+    <Card style={{ width: '50rem' }}>
+      <Card.Img variant="top" src={mapImageUrl || "No Image"} />
       <Card.Body>
         <Card.Title>{cityName || "Unknown City"}</Card.Title>
         <Card.Text>
@@ -23,7 +23,8 @@ const CityInfo = (props) => {
 CityInfo.propTypes = {
   cityName: PropTypes.string.isRequired,
   latitude: PropTypes.string.isRequired,
-  longitude: PropTypes.string.isRequired
+  longitude: PropTypes.string.isRequired,
+  mapImageUrl: PropTypes.string.isRequired
 };
 
 export default CityInfo;
