@@ -16,9 +16,6 @@ const ErrorModal = (props) => {
           <Button variant="secondary" onClick={toggleModal}>
             Close
           </Button>
-          <Button variant="primary" onClick={toggleModal}>
-            Save Changes
-          </Button>
         </Modal.Footer>
       </Modal>
     </>
