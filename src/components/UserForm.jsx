@@ -19,6 +19,7 @@ const UserForm = () => {
   const [mapImageUrl, setMapImageUrl] = useState('');
   const [errorResponse, setErrorResponse] = useState('');
   const [errorResponseBody, setErrorResponseBody] = useState('');
+  const [show, setShow] = useState(false);
 
   const handleUserInput = (event) => {
     setUserInput(event.target.value);
@@ -55,13 +56,20 @@ const UserForm = () => {
     } catch (error) {
       console.error('Error fetching location info:', error);
       setErrorResponse(error.message);
-      setErrorResponseBody(error.response.data.error);
+      setErrorResponseBody(error.response?.data?.error || 'An unknown error occurred');
+      toggleModal();
     }
+  };
+
+  const toggleModal = () => {
+    setShow((prevShow) => !prevShow);
   };
 
   const hasValidCityData = () => {
     return cityName && latitude && longitude && mapImageUrl; // return true only if all values are truthy
   };
+
+ 
 
   return (
     <>
@@ -93,8 +101,13 @@ const UserForm = () => {
           />
         )}
       </div>
-      
-      <ErrorModal errorTitle={errorResponse} errorBody={errorResponseBody} />
+
+      <ErrorModal 
+        errorTitle={errorResponse} 
+        errorBody={errorResponseBody} 
+        show={show}
+        toggleModal={toggleModal}
+      />
     </>
   );
 };
