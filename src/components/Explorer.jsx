@@ -1,10 +1,9 @@
 import axios from 'axios';
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
 import { useState } from 'react';
 
 import CityInfo from './CityInfo';
 import ErrorModal from './ErrorModal';
+import UserForm from './UserForm';
 import '../css/userForm.css';
 
 const API_KEY = import.meta.env.VITE_LOCATIONIQ_API_KEY;
@@ -96,21 +95,11 @@ const Explorer = () => {
   return (
     <>
       <div className='form-container'>
-        <Form onSubmit={handleFormSubmit}>
-          <Form.Group className="mb-3" controlId="formBasicEmail">
-            <Form.Label>Search</Form.Label>
-            <Form.Control 
-              type="text" 
-              placeholder="Enter name of city here"
-              value={userInput}
-              onChange={handleUserInput} 
-            />
-          </Form.Group>
-
-          <Button variant="primary" type="submit" className='mb-3'>
-            Explore!
-          </Button>
-        </Form>
+        <UserForm 
+          handleUserInput={handleUserInput} 
+          handleFormSubmit={handleFormSubmit}
+          userInput={userInput}
+        />
       </div>
 
       <div className='card-container'>
