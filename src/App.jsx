@@ -2,14 +2,16 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Footer from './components/Footer';
 import Header from './components/Header';
-import UserForm from './components/UserForm';
+import Explorer from './components/Explorer';
 
 
 const App = () => {
   return (
     <>
       <Header />
-      <UserForm />
+      <main>
+        <Explorer />
+      </main>
       <Footer />
     </>
   );

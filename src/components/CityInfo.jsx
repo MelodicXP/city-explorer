@@ -6,7 +6,11 @@ const CityInfo = (props) => {
 
   return (
     <Card style={{ width: '50rem' }}>
-      <Card.Img variant="top" src={mapImageUrl || "No Image"} />
+      <Card.Img 
+        variant="top" 
+        src={mapImageUrl || "No Image"}
+        alt={`map of ${cityName}` || "No Image"}
+      />
       <Card.Body>
         <Card.Title>{cityName || "Unknown City"}</Card.Title>
         <Card.Text>
