@@ -17,6 +17,8 @@ const UserForm = () => {
   const [cityName, setCityName] = useState('');
   const [userInput, setUserInput] = useState('');
   const [mapImageUrl, setMapImageUrl] = useState('');
+  const [errorResponse, setErrorResponse] = useState('');
+  const [errorResponseBody, setErrorResponseBody] = useState('');
 
   const handleUserInput = (event) => {
     setUserInput(event.target.value);
@@ -52,6 +54,8 @@ const UserForm = () => {
       setMapImageUrl(mapUrl);
     } catch (error) {
       console.error('Error fetching location info:', error);
+      setErrorResponse(error.message);
+      setErrorResponseBody(error.response.data.error);
     }
   };
 
@@ -89,7 +93,8 @@ const UserForm = () => {
           />
         )}
       </div>
-      <ErrorModal />
+      
+      <ErrorModal errorTitle={errorResponse} errorBody={errorResponseBody} />
     </>
   );
 };

@@ -1,7 +1,10 @@
+import PropTypes from 'prop-types';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 
-const ErrorModal = () => {
+const ErrorModal = (props) => {
+  const { errorTitle, errorBody } = props;
+ 
   return (
     <div
     className="modal show"
@@ -9,11 +12,11 @@ const ErrorModal = () => {
   >
     <Modal.Dialog>
       <Modal.Header closeButton>
-        <Modal.Title>Modal title</Modal.Title>
+        <Modal.Title>Error: {errorTitle}</Modal.Title>
       </Modal.Header>
 
       <Modal.Body>
-        <p>Modal body text goes here.</p>
+        <p>Error Message: {errorBody}</p>
       </Modal.Body>
 
       <Modal.Footer>
@@ -23,6 +26,12 @@ const ErrorModal = () => {
     </Modal.Dialog>
   </div>
   );
+};
+
+// Define prop types
+ErrorModal.propTypes = {
+  errorTitle: PropTypes.string.isRequired,
+  errorBody: PropTypes.string.isRequired
 };
 
 export default ErrorModal;
