@@ -4,6 +4,7 @@ import Form from 'react-bootstrap/Form';
 import { useState } from 'react';
 
 import CityInfo from './CityInfo';
+import ErrorModal from './ErrorModal';
 import '../css/userForm.css';
 
 const API_KEY = import.meta.env.VITE_LOCATIONIQ_API_KEY;
@@ -16,6 +17,9 @@ const UserForm = () => {
   const [cityName, setCityName] = useState('');
   const [userInput, setUserInput] = useState('');
   const [mapImageUrl, setMapImageUrl] = useState('');
+  const [errorResponse, setErrorResponse] = useState('');
+  const [errorResponseBody, setErrorResponseBody] = useState('');
+  const [show, setShow] = useState(false);
 
   const handleUserInput = (event) => {
     setUserInput(event.target.value);
@@ -31,27 +35,58 @@ const UserForm = () => {
   // Function to fetch location info based on user input and API key
   const getLocationInfo = async (API_KEY, city) => {
     try {
-      // Make API request to get location info
-      const API = `https://us1.locationiq.com/v1/search?key=${API_KEY}&q=${city}&format=json`;
-      const response = await axios.get(API);
-      const locationInfo = response.data[0];
+      // Fetch location data
+      const locationInfo = await fetchLocationData(API_KEY, city);
 
-      // Extract data from response
-      const cityName = locationInfo.display_name;
-      const latitude = locationInfo.lat;
-      const longitude = locationInfo.lon;
-
-      // Update state with data received
-      setCityName(cityName);
-      setLatitude(latitude);
-      setLongitude(longitude);
+      // Update state based on location data
+      updateLocationState(locationInfo);
       
-      // Set image url after latitude and longitude are recieved
-      const mapUrl = `https://maps.locationiq.com/v3/staticmap?key=${API_KEY}&center=${latitude},${longitude}&zoom=9&size=600x400&markers=icon:large-blue-cutout%7C${latitude},${longitude}`;
-      setMapImageUrl(mapUrl);
     } catch (error) {
-      console.error('Error fetching location info:', error);
+      // Handle errors
+      handleLocationError(error);
     }
+  };
+
+  // Function to make API request
+  const fetchLocationData = async (API_KEY, city) => {
+    // Make API request to get location info
+    const API = `https://us1.locationiq.com/v1/search?key=${API_KEY}&q=${city}&format=json`;
+    const response = await axios.get(API);
+    return response.data[0];
+  };
+
+  // Function to extract and set state from location data
+  const updateLocationState = (locationInfo) => {
+    // Extract data from response
+    const cityName = locationInfo.display_name;
+    const latitude = locationInfo.lat;
+    const longitude = locationInfo.lon;
+
+    // Update state with data received
+    setCityName(cityName);
+    setLatitude(latitude);
+    setLongitude(longitude);
+    
+    // Set image url after latitude and longitude are recieved
+    const mapUrl = getMapURL(API_KEY, latitude, longitude);
+    setMapImageUrl(mapUrl);
+  };
+
+  // Function to generate map URL based on latitude and longitude
+  const getMapURL = (API_KEY, latitude, longitude) => {
+    return`https://maps.locationiq.com/v3/staticmap?key=${API_KEY}&center=${latitude},${longitude}&zoom=9&size=600x400&markers=icon:large-blue-cutout%7C${latitude},${longitude}`
+  };
+
+  // Function to handle errors
+  const handleLocationError = (error) => {
+    console.error('Error fetching location info:', error);
+    setErrorResponse(error.message);
+    setErrorResponseBody(error.response?.data?.error || 'An unknown error occurred');
+    toggleModal();
+  };
+
+  const toggleModal = () => {
+    setShow((prevShow) => !prevShow);
   };
 
   const hasValidCityData = () => {
@@ -88,6 +123,13 @@ const UserForm = () => {
           />
         )}
       </div>
+
+      <ErrorModal 
+        errorTitle={errorResponse} 
+        errorBody={errorResponseBody} 
+        show={show}
+        toggleModal={toggleModal}
+      />
     </>
   );
 };
