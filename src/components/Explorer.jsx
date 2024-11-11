@@ -4,7 +4,8 @@ import { useState } from 'react';
 import CityInfo from './CityInfo';
 import ErrorModal from './ErrorModal';
 import UserForm from './UserForm';
-import '../css/userForm.css';
+import Weather from './Weather';
+import '../css/explorer.css';
 
 const API_KEY = import.meta.env.VITE_LOCATIONIQ_API_KEY;
 
@@ -111,6 +112,10 @@ const Explorer = () => {
             mapImageUrl={mapImageUrl}
           />
         )}
+      </div>
+
+      <div>
+        <Weather />
       </div>
 
       <ErrorModal 
