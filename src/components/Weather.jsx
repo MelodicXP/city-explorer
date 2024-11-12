@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 
-import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
@@ -10,7 +9,6 @@ const Weather = (props) => {
   const { weatherData } = props;
 
   return (
-    <Container>
       <Row className='align-items-center'>
         {weatherData.map((forecast, index) => (
           <Col key={index + 1} md={3}>
@@ -22,7 +20,6 @@ const Weather = (props) => {
           </Col>
         ))}
       </Row>
-    </Container>
   );
 };
 

@@ -7,7 +7,7 @@ const WeatherDay = (props) => {
   const { date, description, dayNumber } = props;
 
   return (
-    <Card style={{ width: '18rem' }} className='d-flex justify-content-center'>
+    <Card style={{ width: '18rem' }} className='mb-3' >
       <Card.Header>Forecast Day {dayNumber}</Card.Header>
       <ListGroup variant="flush">
         <ListGroup.Item>Date: {date}</ListGroup.Item>
