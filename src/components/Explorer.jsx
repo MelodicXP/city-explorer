@@ -15,6 +15,7 @@ const Explorer = () => {
   const [latitude, setLatitude] = useState('');
   const [longitude, setLongitude] = useState('');
   const [cityName, setCityName] = useState('');
+  const [weatherData, setWeatherData] = useState([]);
   const [userInput, setUserInput] = useState('');
   const [mapImageUrl, setMapImageUrl] = useState('');
   const [errorResponse, setErrorResponse] = useState('');
@@ -37,14 +38,30 @@ const Explorer = () => {
     try {
       // Fetch location data
       const locationInfo = await fetchLocationData(API_KEY, city);
-
       // Update state based on location data
       updateLocationState(locationInfo);
+
+      const weatherInfo = await fetchWeatherData(); 
+      updateWeatherState(weatherInfo);
       
     } catch (error) {
       // Handle errors
       handleLocationError(error);
     }
+  };
+
+  // Function to fetch weather forecast info
+  const fetchWeatherData = async (API_KEY, city) => {
+    // Make API request to get forecast info
+    const API = `http://localhost:3001/weather?city_name=Seattle&lat=47.6038321&lon=-122.330062`;
+    const response = await axios.get(API);
+    return response.data;
+  };
+
+  // Function to update state of forecast data
+  const updateWeatherState = (weatherInfo) => {
+    const weather = weatherInfo;
+    setWeatherData(weather);
   };
 
   // Function to make API request
@@ -92,15 +109,6 @@ const Explorer = () => {
   const hasValidCityData = () => {
     return cityName && latitude && longitude && mapImageUrl; // return true only if all values are truthy
   };
-  let weatherData = [
-    {date: '1-1-1900', description: 'Day 1 description'},
-    {date: '1-2-1900', description: 'Day 2 description'},
-    {date: '1-3-1900', description: 'Day 3 description'},
-    {date: '1-4-1900', description: 'Day 4 description'},
-    {date: '1-5-1900', description: 'Day 5 description'},
-    {date: '1-6-1900', description: 'Day 6 description'},
-    {date: '1-7-1900', description: 'Day 7 description'},
-  ];
   
   return (
     <>
