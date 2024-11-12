@@ -7,22 +7,27 @@ import Col from 'react-bootstrap/Col';
 import WeatherDay from './WeatherDay';
 
 const Weather = (props) => {
-  const { date, description } = props;
+  const { weatherData } = props;
 
   return (
     <Container>
-      <Row>
-        <Col>
-          <WeatherDay date={date} description={description} dayNumber='Day 23'/>
-        </Col>
+      <Row className='align-items-center'>
+        {weatherData.map((forecast, index) => (
+          <Col key={index + 1} md={3}>
+            <WeatherDay 
+              date={forecast.date} 
+              description={forecast.description} 
+              dayNumber={index + 1}
+            />
+          </Col>
+        ))}
       </Row>
     </Container>
   );
 };
 
 Weather.propTypes = {
-  date: PropTypes.string.isRequired,
-  description: PropTypes.string.isRequired
+  weatherData: PropTypes.array.isRequired
 };
 
 export default Weather;

@@ -92,7 +92,16 @@ const Explorer = () => {
   const hasValidCityData = () => {
     return cityName && latitude && longitude && mapImageUrl; // return true only if all values are truthy
   };
-
+  let weatherData = [
+    {date: '1-1-1900', description: 'Day 1 description'},
+    {date: '1-2-1900', description: 'Day 2 description'},
+    {date: '1-3-1900', description: 'Day 3 description'},
+    {date: '1-4-1900', description: 'Day 4 description'},
+    {date: '1-5-1900', description: 'Day 5 description'},
+    {date: '1-6-1900', description: 'Day 6 description'},
+    {date: '1-7-1900', description: 'Day 7 description'},
+  ];
+  
   return (
     <>
       <div className='form-container'>
@@ -103,7 +112,7 @@ const Explorer = () => {
         />
       </div>
 
-      <div className='card-container'>
+      <div className='cityInfo-container'>
         {hasValidCityData() && ( // render city info only if valid city data 
           <CityInfo 
             cityName={cityName} 
@@ -114,16 +123,20 @@ const Explorer = () => {
         )}
       </div>
 
-      <div>
-        <Weather date='Props Date from Explorer' description='Props Description'/>
+      <div className='weather-container'>
+        <Weather 
+          weatherData={weatherData}
+        />
       </div>
 
-      <ErrorModal 
-        errorTitle={errorResponse} 
-        errorBody={errorResponseBody} 
-        show={show}
-        toggleModal={toggleModal}
-      />
+      <div className='modal-container'>
+        <ErrorModal 
+          errorTitle={errorResponse} 
+          errorBody={errorResponseBody} 
+          show={show}
+          toggleModal={toggleModal}
+        />
+      </div>  
     </>
   );
 };
