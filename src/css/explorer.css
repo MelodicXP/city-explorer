@@ -3,3 +3,10 @@
   max-width: 25rem;
   margin: 0 auto; /* Centers the form container */
 }
+
+.weather-container {
+  width: 80rem;
+  /* max-width: 50rem; */
+  margin: 0 auto; /* Centers the form container */
+  outline: 1px solid yellow;
+}
