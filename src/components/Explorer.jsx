@@ -115,7 +115,7 @@ const Explorer = () => {
       </div>
 
       <div>
-        <Weather />
+        <Weather date='Props Date from Explorer' description='Props Description'/>
       </div>
 
       <ErrorModal 

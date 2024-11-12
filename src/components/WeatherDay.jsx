@@ -1,17 +1,26 @@
+import PropTypes from 'prop-types';
+
 import Card from 'react-bootstrap/Card';
 import ListGroup from 'react-bootstrap/ListGroup';
 
-const WeatherDay = () => {
+const WeatherDay = (props) => {
+  const { date, description, dayNumber } = props;
+
   return (
     <Card style={{ width: '18rem' }}>
-      <Card.Header>ForeCast Day Number goes here</Card.Header>
+      <Card.Header>Forecast Day {dayNumber}</Card.Header>
       <ListGroup variant="flush">
-        <ListGroup.Item>DATE Goes here</ListGroup.Item>
-        <ListGroup.Item>Description goes here</ListGroup.Item>
+        <ListGroup.Item>Date: {date}</ListGroup.Item>
+        <ListGroup.Item>Desciption: {description}</ListGroup.Item>
         <ListGroup.Item>Maybe other info?</ListGroup.Item>
       </ListGroup>
     </Card>
   );
+};
+
+WeatherDay.propTypes = {
+  date: PropTypes.string.isRequired,
+  description: PropTypes.string.isRequired
 };
 
 export default WeatherDay;
