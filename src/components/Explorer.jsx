@@ -15,6 +15,7 @@ const Explorer = () => {
   const [latitude, setLatitude] = useState('');
   const [longitude, setLongitude] = useState('');
   const [cityName, setCityName] = useState('');
+  const [weatherData, setWeatherData] = useState([]);
   const [userInput, setUserInput] = useState('');
   const [mapImageUrl, setMapImageUrl] = useState('');
   const [errorResponse, setErrorResponse] = useState('');
@@ -37,9 +38,12 @@ const Explorer = () => {
     try {
       // Fetch location data
       const locationInfo = await fetchLocationData(API_KEY, city);
-
       // Update state based on location data
-      updateLocationState(locationInfo);
+      const weatherInfo = updateLocationState(locationInfo);
+      // Fetch weather data
+      const weather = await fetchWeatherData(weatherInfo);
+      // Update weather state 
+      updateWeatherState(weather);
       
     } catch (error) {
       // Handle errors
@@ -57,25 +61,49 @@ const Explorer = () => {
 
   // Function to extract and set state from location data
   const updateLocationState = (locationInfo) => {
-    // Extract data from response
-    const cityName = locationInfo.display_name;
-    const latitude = locationInfo.lat;
-    const longitude = locationInfo.lon;
+    // Create a city info object to store all values
+    let cityInfoObject = {
+      cityName: locationInfo.display_name,
+      latitude: locationInfo.lat,
+      longitude: locationInfo.lon,
+    };
+
+    // Destructure values from the cityInfoObject for easier readability
+    const { cityName, latitude, longitude } = cityInfoObject;
 
     // Update state with data received
     setCityName(cityName);
     setLatitude(latitude);
     setLongitude(longitude);
     
-    // Set image url after latitude and longitude are recieved
+    // Set image url after latitude and longitude are received
     const mapUrl = getMapURL(API_KEY, latitude, longitude);
     setMapImageUrl(mapUrl);
+    
+    return cityInfoObject; // Return the cityInfoObject with all the necessary details
   };
 
   // Function to generate map URL based on latitude and longitude
   const getMapURL = (API_KEY, latitude, longitude) => {
     return`https://maps.locationiq.com/v3/staticmap?key=${API_KEY}&center=${latitude},${longitude}&zoom=9&size=600x400&markers=icon:large-blue-cutout%7C${latitude},${longitude}`
   };
+
+    // Function to fetch weather forecast data
+    const fetchWeatherData = async (weatherInfo) => {
+      const { cityName, latitude, longitude } = weatherInfo;
+      const cityNameOnly = cityName.split(',')[0].trim(); // Remove city name only (ex. 'Seattle, King County, Washington, USA')
+  
+      // Make API request to get forecast info
+      const API = `http://localhost:3001/weather?city_name=${cityNameOnly}&lat=${latitude}&lon=${longitude}`;
+      const response = await axios.get(API);
+      return response.data;
+    };
+  
+    // Function to update state of weather
+    const updateWeatherState = (weatherInfo) => {
+      const weather = weatherInfo;
+      setWeatherData(weather);
+    };  
 
   // Function to handle errors
   const handleLocationError = (error) => {
@@ -92,7 +120,7 @@ const Explorer = () => {
   const hasValidCityData = () => {
     return cityName && latitude && longitude && mapImageUrl; // return true only if all values are truthy
   };
-
+  
   return (
     <>
       <div className='form-container'>
@@ -103,7 +131,7 @@ const Explorer = () => {
         />
       </div>
 
-      <div className='card-container'>
+      <div className='cityInfo-container'>
         {hasValidCityData() && ( // render city info only if valid city data 
           <CityInfo 
             cityName={cityName} 
@@ -114,16 +142,20 @@ const Explorer = () => {
         )}
       </div>
 
-      <div>
-        <Weather date='Props Date from Explorer' description='Props Description'/>
+      <div className='weather-container'>
+        <Weather 
+          weatherData={weatherData}
+        />
       </div>
 
-      <ErrorModal 
-        errorTitle={errorResponse} 
-        errorBody={errorResponseBody} 
-        show={show}
-        toggleModal={toggleModal}
-      />
+      <div className='modal-container'>
+        <ErrorModal 
+          errorTitle={errorResponse} 
+          errorBody={errorResponseBody} 
+          show={show}
+          toggleModal={toggleModal}
+        />
+      </div>  
     </>
   );
 };

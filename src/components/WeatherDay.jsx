@@ -7,7 +7,7 @@ const WeatherDay = (props) => {
   const { date, description, dayNumber } = props;
 
   return (
-    <Card style={{ width: '18rem' }}>
+    <Card style={{ width: '18rem' }} className='mb-3' >
       <Card.Header>Forecast Day {dayNumber}</Card.Header>
       <ListGroup variant="flush">
         <ListGroup.Item>Date: {date}</ListGroup.Item>
@@ -20,7 +20,9 @@ const WeatherDay = (props) => {
 
 WeatherDay.propTypes = {
   date: PropTypes.string.isRequired,
-  description: PropTypes.string.isRequired
+  description: PropTypes.string.isRequired,
+  dayNumber: PropTypes.number.isRequired,
+
 };
 
 export default WeatherDay;
