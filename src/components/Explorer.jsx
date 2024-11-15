@@ -3,6 +3,7 @@ import { useState } from 'react';
 
 import CityInfo from './CityInfo';
 import ErrorModal from './ErrorModal';
+import Movies from './Movies';
 import UserForm from './UserForm';
 import Weather from './Weather';
 import '../css/explorer.css';
@@ -148,6 +149,9 @@ const Explorer = () => {
         />
       </div>
 
+      <div className='movies-container'>
+        <Movies />
+      </div>
       <div className='modal-container'>
         <ErrorModal 
           errorTitle={errorResponse} 
