@@ -17,6 +17,7 @@ const Explorer = () => {
   const [longitude, setLongitude] = useState('');
   const [cityName, setCityName] = useState('');
   const [weatherData, setWeatherData] = useState([]);
+  const [movieData, setMovieData] = useState([]);
   const [userInput, setUserInput] = useState('');
   const [mapImageUrl, setMapImageUrl] = useState('');
   const [errorResponse, setErrorResponse] = useState('');
@@ -34,17 +35,22 @@ const Explorer = () => {
     }
   };
 
-  // Function to fetch location info based on user input and API key
+  // Function to fetch location info for city (map, weather, movies) based on user input and API key
   const getLocationInfo = async (API_KEY, city) => {
     try {
       // Fetch location data
       const locationInfo = await fetchLocationData(API_KEY, city);
-      // Update state based on location data
-      const weatherInfo = updateLocationState(locationInfo);
-      // Fetch weather data
-      const weather = await fetchWeatherData(weatherInfo);
-      // Update weather state 
+
+      // Update state based on location data, and return data as object
+      const locationObj = updateLocationState(locationInfo); 
+
+      // Fetch weather and movie data
+      const weather = await fetchWeatherData(locationObj);
+      // Update weather and movie state 
       updateWeatherState(weather);
+      
+      const movies = await fetchMovieData(locationObj);
+      updateMovieState(movies);
       
     } catch (error) {
       // Handle errors
@@ -89,22 +95,36 @@ const Explorer = () => {
     return`https://maps.locationiq.com/v3/staticmap?key=${API_KEY}&center=${latitude},${longitude}&zoom=9&size=600x400&markers=icon:large-blue-cutout%7C${latitude},${longitude}`
   };
 
-    // Function to fetch weather forecast data
-    const fetchWeatherData = async (weatherInfo) => {
-      const { cityName, latitude, longitude } = weatherInfo;
-      const cityNameOnly = cityName.split(',')[0].trim(); // Remove city name only (ex. 'Seattle, King County, Washington, USA')
-  
-      // Make API request to get forecast info
-      const API = `http://localhost:3001/weather?city_name=${cityNameOnly}&lat=${latitude}&lon=${longitude}`;
-      const response = await axios.get(API);
-      return response.data;
-    };
-  
-    // Function to update state of weather
-    const updateWeatherState = (weatherInfo) => {
-      const weather = weatherInfo;
-      setWeatherData(weather);
-    };  
+  const fetchWeatherData = async (locationObj) => {
+    const { cityName, latitude, longitude } = locationObj;
+    const cityNameOnly = cityName.split(',')[0].trim(); // Remove city name only (ex. 'Seattle, King County, Washington, USA')
+
+    // Make API request to get forecast info
+    const API = `http://localhost:3001/weather?city_name=${cityNameOnly}&lat=${latitude}&lon=${longitude}`;
+    const response = await axios.get(API);
+    return response.data;
+  };
+
+  const fetchMovieData = async (locationObj) => {
+    const { cityName } = locationObj;
+    const cityNameOnly = cityName.split(',')[0].trim();
+
+    // Make API request to get movie data
+    const API = `http://localhost:3001/movies?query=${cityNameOnly}`;
+    const response = await axios.get(API);
+    return response.data;
+  };
+   
+  // Function to update state of weather
+  const updateWeatherState = (weatherInfo) => {
+    const weather = weatherInfo;
+    setWeatherData(weather);
+  };  
+
+  const updateMovieState = (moviesInfo) => {
+    const movies = moviesInfo;
+    setMovieData(movies);
+  };
 
   // Function to handle errors
   const handleLocationError = (error) => {
@@ -150,8 +170,9 @@ const Explorer = () => {
       </div>
 
       <div className='movies-container'>
-        <Movies />
+        <Movies movieData={movieData}/>
       </div>
+
       <div className='modal-container'>
         <ErrorModal 
           errorTitle={errorResponse} 

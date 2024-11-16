@@ -1,7 +1,25 @@
-const Movies = () => {
-  return(
-    <p>Movies go here</p>
+import PropTypes from 'prop-types';
+
+const Movies = (props) => {
+  const { movieData } = props;
+
+  // If movieData is empty or undefined, return a fallback placeholder.
+  if (!movieData || movieData.length === 0) {
+    return <p>No movie data available</p>;
+  }
+
+  // Todo - loop through array and display each movie
+  // Otherwise, render the data for the first movie
+  return (
+    <div>
+      <p>Movie Title: {movieData[0].title}</p>
+      <p>Release Date: {movieData[0].releaseDate}</p>
+    </div>
   );
+};
+
+Movies.propTypes = {
+  movieData: PropTypes.array.isRequired
 };
 
 export default Movies;
