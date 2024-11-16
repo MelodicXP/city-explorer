@@ -1,31 +1,38 @@
-import React from 'react';
-import Col from 'react-bootstrap/Col';
+import PropTypes from 'prop-types';
 
-class Movie extends React.Component {
+import Card from 'react-bootstrap/Card';
+import ListGroup from 'react-bootstrap/ListGroup';
 
-  constructor (props) {
+const Movie = (props) => {
+  const { title, overview, voteAverage, voteCount, imageURL, popularity, releaseDate } = props;
+  return (
+    <Card style={{ width: '18rem' }} className='mb-3' >
+      <Card.Header>Movie Title: {title}</Card.Header>
+      <Card.Img 
+        variant="top" 
+        src={imageURL || "No Image"}
+        alt={`image of movie named ${title}` || "No Image"}
+      />
 
-    super(props); // Activates React.Component
+      <ListGroup variant="flush">
+        <ListGroup.Item>Release Date: {releaseDate}</ListGroup.Item>
+        <ListGroup.Item>Overview: {overview}</ListGroup.Item>
+        <ListGroup.Item>Popularity: {popularity}</ListGroup.Item>
+        <ListGroup.Item>Vote Count: {voteCount}</ListGroup.Item>
+        <ListGroup.Item>Vote Average: {voteAverage}</ListGroup.Item>
+      </ListGroup>
+    </Card>
+  );
+};
 
-  }
-
-  render() {
-    const { title, overview, voteAverage, voteCount, popularity, releaseDate, imageURL } = this.props;
-
-    return (
-      <Col xs={6} md={4} className='movie-data'>
-        <ul className='forecast-data-ul'>
-          <li id='movie-title'>{title}</li>
-          <li>Overview: {overview}</li>
-          <li>Average Votes: {voteAverage}</li>
-          <li>Total Votes: {voteCount}</li>
-          <li>Popularity: {popularity}</li>
-          <li>Release Date: {releaseDate}</li>
-          <li id='movie-li'><img id='movie-image' src={imageURL} alt={title} /></li>
-        </ul>
-      </Col>
-    );
-  }
-}
-
-export default Movie
+Movie.propTypes = {
+  title: PropTypes.string.isRequired,
+  overview: PropTypes.string.isRequired,
+  voteAverage: PropTypes.number.isRequired,
+  voteCount: PropTypes.number.isRequired,
+  imageURL: PropTypes.string.isRequired,
+  popularity: PropTypes.number.isRequired,
+  releaseDate: PropTypes.string.isRequired,
+};
+  
+export default Movie;
