@@ -24,50 +24,46 @@ const Explorer = () => {
   const [errorResponseBody, setErrorResponseBody] = useState('');
   const [show, setShow] = useState(false);
 
+  // Handle user input in form
   const handleUserInput = (event) => {
     setUserInput(event.target.value);
   }
   
+  // Handle when form submitted (starts entire sequence)
   const handleFormSubmit = (event) => {
     event.preventDefault();
     if (userInput) {
-      getLocationInfo(API_KEY, userInput);
+      fetchAndinitializeData(API_KEY, userInput);
     }
   };
 
-  // Function to fetch location info for city (map, weather, movies) based on user input and API key
-  const getLocationInfo = async (API_KEY, city) => {
-    try {
-      // Fetch location data
+  // Fetch location info and initialize data
+  const fetchAndinitializeData = async (API_KEY, city) => {
+      // Fetch location data (city name, lat, and lon)
       const locationInfo = await fetchLocationData(API_KEY, city);
 
-      // Update state based on location data, and return data as object
+      // Update state based on location data (return as object)
       const locationObj = updateLocationState(locationInfo); 
 
-      // Fetch weather and movie data
-      const weather = await fetchWeatherData(locationObj);
-      // Update weather and movie state 
-      updateWeatherState(weather);
-      
-      const movies = await fetchMovieData(locationObj);
-      updateMovieState(movies);
-      
+      // Fetch related data
+      await fetchWeatherAndMovieData(locationObj);
+  };
+
+  // Fetch location data
+  const fetchLocationData = async (API_KEY, city) => {
+    // Make API request to get location info
+    try {
+      const API = `https://us1.locationiq.com/v1/search?key=${API_KEY}&q=${city}&format=json`;
+      const response = await axios.get(API);
+      return response.data[0];
     } catch (error) {
-      // Handle errors
-      handleLocationError(error);
+      handleError(error, 'Location Data');
     }
   };
 
-  // Function to make API request
-  const fetchLocationData = async (API_KEY, city) => {
-    // Make API request to get location info
-    const API = `https://us1.locationiq.com/v1/search?key=${API_KEY}&q=${city}&format=json`;
-    const response = await axios.get(API);
-    return response.data[0];
-  };
-
-  // Function to extract and set state from location data
+  // Set location state (return data as object)
   const updateLocationState = (locationInfo) => {
+
     // Create a city info object to store all values
     let cityInfoObject = {
       cityName: locationInfo.display_name,
@@ -90,9 +86,18 @@ const Explorer = () => {
     return cityInfoObject; // Return the cityInfoObject with all the necessary details
   };
 
-  // Function to generate map URL based on latitude and longitude
+  // Generate map URL based on latitude and longitude
   const getMapURL = (API_KEY, latitude, longitude) => {
     return`https://maps.locationiq.com/v3/staticmap?key=${API_KEY}&center=${latitude},${longitude}&zoom=9&size=600x400&markers=icon:large-blue-cutout%7C${latitude},${longitude}`
+  };
+
+  // Fetch related data (weather and movies)
+  const fetchWeatherAndMovieData = async (locationObj) => {
+      const weather = await fetchWeatherData(locationObj);
+      updateWeatherState(weather);
+      
+      const movies = await fetchMovieData(locationObj);
+      updateMovieState(movies);
   };
 
   const fetchWeatherData = async (locationObj) => {
@@ -100,9 +105,13 @@ const Explorer = () => {
     const cityNameOnly = cityName.split(',')[0].trim(); // Remove city name only (ex. 'Seattle, King County, Washington, USA')
 
     // Make API request to get forecast info
-    const API = `http://localhost:3001/weather?city_name=${cityNameOnly}&lat=${latitude}&lon=${longitude}`;
-    const response = await axios.get(API);
-    return response.data;
+    try {
+      const API = `http://localhost:3001/weather?city_name=${cityNameOnly}&lat=${latitude}&lon=${longitude}`;
+      const response = await axios.get(API);
+      return response.data;
+    } catch (error) {
+      handleError(error, 'Weather Data');
+    }
   };
 
   const fetchMovieData = async (locationObj) => {
@@ -110,12 +119,15 @@ const Explorer = () => {
     const cityNameOnly = cityName.split(',')[0].trim();
 
     // Make API request to get movie data
-    const API = `http://localhost:3001/movies?query=${cityNameOnly}`;
-    const response = await axios.get(API);
-    return response.data;
+    try {
+      const API = `http://localhost:3001/movies?query=${cityNameOnly}`;
+      const response = await axios.get(API);
+      return response.data;
+    } catch (error) {
+      handleError(error, 'Movie Data');
+    }
   };
    
-  // Function to update state of weather
   const updateWeatherState = (weatherInfo) => {
     const weather = weatherInfo;
     setWeatherData(weather);
@@ -126,16 +138,19 @@ const Explorer = () => {
     setMovieData(movies);
   };
 
-  // Function to handle errors
-  const handleLocationError = (error) => {
-    console.error('Error fetching location info:', error);
-    setErrorResponse(error.message);
+  // Handle errors
+  const handleError = (error, context) => {
+    console.error(`Error in ${context}:`, error);
+    setErrorResponse(`${context}: ${error.message}`);
     setErrorResponseBody(error.response?.data?.error || 'An unknown error occurred');
-    toggleModal();
+    setShow(true); // Explicitly open the modal
   };
 
   const toggleModal = () => {
-    setShow((prevShow) => !prevShow);
+    setShow((prevShow) => {
+      const newShowState = !prevShow;
+      return newShowState;
+    });
   };
 
   const hasValidCityData = () => {
