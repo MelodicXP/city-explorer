@@ -13,12 +13,10 @@ const Movies = (props) => {
     return <p>No movie data available</p>;
   }
 
-  // Todo - loop through array and display each movie
-  // Otherwise, render the data for the first movie
+  // Loop through movie data and display each movie
   return (
     <div>
-      <p>Movie Title: {movieData[0].title}</p>
-      <p>Release Date: {movieData[0].releaseDate}</p>
+      <h2>Movies</h2>
 
       <Row className='align-items-center'>
         {movieData.map((movie, index) => (
