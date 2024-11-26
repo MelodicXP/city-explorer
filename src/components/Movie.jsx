@@ -2,26 +2,29 @@ import PropTypes from 'prop-types';
 
 import Card from 'react-bootstrap/Card';
 import ListGroup from 'react-bootstrap/ListGroup';
+import '../css/movies.css';
 
 const Movie = (props) => {
   const { title, overview, voteAverage, voteCount, imageURL, popularity, releaseDate } = props;
   return (
-    <Card style={{ width: '18rem' }} className='mb-3' >
-      <Card.Header>Movie Title: {title}</Card.Header>
-      <Card.Img 
-        variant="top" 
-        src={imageURL || "No Image"}
-        alt={`image of movie named ${title}` || "No Image"}
-      />
+    <div className='movie-card'>
+      <Card>
+        <Card.Header>Movie Title: {title}</Card.Header>
+        <Card.Img 
+          variant="top" 
+          src={imageURL || "No Image"}
+          alt={`image of movie named ${title}` || "No Image"}
+        />
 
-      <ListGroup variant="flush">
-        <ListGroup.Item>Release Date: {releaseDate}</ListGroup.Item>
-        <ListGroup.Item>Overview: {overview}</ListGroup.Item>
-        <ListGroup.Item>Popularity: {popularity}</ListGroup.Item>
-        <ListGroup.Item>Vote Count: {voteCount}</ListGroup.Item>
-        <ListGroup.Item>Vote Average: {voteAverage}</ListGroup.Item>
-      </ListGroup>
-    </Card>
+        <ListGroup variant="flush">
+          <ListGroup.Item>Release Date: {releaseDate}</ListGroup.Item>
+          <ListGroup.Item>Overview: {overview}</ListGroup.Item>
+          <ListGroup.Item>Popularity: {popularity}</ListGroup.Item>
+          <ListGroup.Item>Vote Count: {voteCount}</ListGroup.Item>
+          <ListGroup.Item>Vote Average: {voteAverage}</ListGroup.Item>
+        </ListGroup>
+      </Card>
+    </div>
   );
 };
 

@@ -1,8 +1,8 @@
 const Footer = () => {
   return (
     <footer>
-        Author: Melodic
-      </footer>
+      City Explorer
+    </footer>
   );
 };
 

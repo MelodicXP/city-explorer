@@ -8,18 +8,26 @@ import WeatherDay from './WeatherDay';
 const Weather = (props) => {
   const { weatherData } = props;
 
+  // If weatherData is empty or undefined, return a fallback placeholder.
+  if (!weatherData || weatherData.length === 0) {
+    return <p>No Weather data available</p>;
+  }
+
   return (
-      <Row className='align-items-center'>
-        {weatherData.map((forecast, index) => (
-          <Col key={index + 1} md={3}>
-            <WeatherDay 
-              date={forecast.date} 
-              description={forecast.description} 
-              dayNumber={index + 1}
-            />
-          </Col>
-        ))}
-      </Row>
+      <>
+        <h2>Weather Forecast for the next 7 days</h2>
+        <Row className='align-items-center'>
+          {weatherData.map((forecast, index) => (
+            <Col key={index + 1} md={3}>
+              <WeatherDay 
+                date={forecast.date} 
+                description={forecast.description} 
+                dayNumber={index + 1}
+              />
+            </Col>
+          ))}
+        </Row>
+      </>
   );
 };
 
