@@ -1,9 +1,7 @@
 .movie-data {
-  outline: 3px solid blue;
   display: flex;
 }
 
 .movie-card {
-  outline: 3px solid white;
   margin-bottom: 3rem;
 }
