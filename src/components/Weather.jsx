@@ -8,7 +8,7 @@ import WeatherDay from './WeatherDay';
 const Weather = (props) => {
   const { weatherData } = props;
 
-  // If movieData is empty or undefined, return a fallback placeholder.
+  // If weatherData is empty or undefined, return a fallback placeholder.
   if (!weatherData || weatherData.length === 0) {
     return <p>No Weather data available</p>;
   }
