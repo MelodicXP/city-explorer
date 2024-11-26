@@ -1,0 +1,7 @@
+.movie-data {
+  display: flex;
+}
+
+.movie-card {
+  margin-bottom: 3rem;
+}

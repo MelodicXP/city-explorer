@@ -1,26 +1,31 @@
-import React from 'react';
-import Col from 'react-bootstrap/Col';
+import PropTypes from 'prop-types';
 
-class WeatherDay extends React.Component {
+import Card from 'react-bootstrap/Card';
+import ListGroup from 'react-bootstrap/ListGroup';
+import '../css/weather.css';
 
-  constructor (props) {
+const WeatherDay = (props) => {
+  const { date, description, dayNumber } = props;
 
-    super(props); // Activates React.Component
+  return (
+    <div className='weather-card'>
+      <Card>
+        <Card.Header>Forecast Day {dayNumber}</Card.Header>
+        <ListGroup variant="flush">
+          <ListGroup.Item>Date: {date}</ListGroup.Item>
+          <ListGroup.Item>Desciption: {description}</ListGroup.Item>
+          <ListGroup.Item>Maybe other info?</ListGroup.Item>
+        </ListGroup>
+      </Card>
+    </div>
+  );
+};
 
-  }
+WeatherDay.propTypes = {
+  date: PropTypes.string.isRequired,
+  description: PropTypes.string.isRequired,
+  dayNumber: PropTypes.number.isRequired,
 
-  render() {
-    const { date, description } = this.props;
-    
-    return (
-      <Col xs={6} md={4} className='forecast-data'>
-        <ul className='forecast-data-ul'>
-          <li>Date: {date}</li>
-          <li>Conditions: {description}</li>
-        </ul>
-      </Col>
-    );
-  }
-}
+};
 
-export default WeatherDay
+export default WeatherDay;
