@@ -4,3 +4,7 @@
   margin: 0 auto; /* Centers the form container */
 }
 
+.cityInfo-container {
+  outline: 3px solid green;
+}
+

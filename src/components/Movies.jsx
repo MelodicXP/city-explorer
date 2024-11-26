@@ -4,6 +4,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
 import Movie from './Movie';
+import '../css/movies.css';
 
 const Movies = (props) => {
   const { movieData } = props;
@@ -15,25 +16,26 @@ const Movies = (props) => {
 
   // Loop through movie data and display each movie
   return (
-    <div>
+    <>
       <h2>Movies</h2>
-
-      <Row className='align-items-center'>
-        {movieData.map((movie, index) => (
-          <Col key={index + 1} md={3}>
-            <Movie 
-              title={movie.title} 
-              overview={movie.overview} 
-              voteAverage={movie.voteAverage}
-              voteCount ={movie.voteCount}
-              imageURL={movie.imageURL}
-              popularity={movie.popularity}
-              releaseDate={movie.releaseDate}
-            />
-          </Col>
-        ))}
-      </Row>
-    </div>
+      <div className='movie-data'>
+        <Row>
+          {movieData.map((movie, index) => (
+            <Col key={index + 1} md={3}>
+              <Movie 
+                title={movie.title} 
+                overview={movie.overview} 
+                voteAverage={movie.voteAverage}
+                voteCount ={movie.voteCount}
+                imageURL={movie.imageURL}
+                popularity={movie.popularity}
+                releaseDate={movie.releaseDate}
+              />
+            </Col>
+          ))}
+        </Row>
+      </div>
+    </>
   );
 };
 

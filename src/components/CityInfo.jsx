@@ -1,11 +1,12 @@
 import PropTypes from 'prop-types';
 import Card from 'react-bootstrap/Card';
+import '../css/cityInfo.css';
 
 const CityInfo = (props) => {
   const { cityName, latitude, longitude, mapImageUrl } = props;
 
   return (
-    <Card style={{ width: '50rem' }}>
+    <Card style={{ width: '50rem' }} className='city-map'>
       <Card.Img 
         variant="top" 
         src={mapImageUrl || "No Image"}
