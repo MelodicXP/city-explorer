@@ -9,6 +9,7 @@ import Weather from './Weather';
 import '../css/explorer.css';
 
 const API_KEY = import.meta.env.VITE_LOCATIONIQ_API_KEY;
+const SERVER = import.meta.env.VITE_SERVER;
 
 /***************************************************** */
 const Explorer = () => {
@@ -106,7 +107,7 @@ const Explorer = () => {
 
     // Make API request to get forecast info
     try {
-      const API = `http://localhost:3001/weather?city_name=${cityNameOnly}&lat=${latitude}&lon=${longitude}`;
+      const API = `${SERVER}/weather?city_name=${cityNameOnly}&lat=${latitude}&lon=${longitude}`;
       const response = await axios.get(API);
       return response.data;
     } catch (error) {
@@ -120,7 +121,7 @@ const Explorer = () => {
 
     // Make API request to get movie data
     try {
-      const API = `http://localhost:3001/movies?query=${cityNameOnly}`;
+      const API = `${SERVER}/movies?query=${cityNameOnly}`;
       const response = await axios.get(API);
       return response.data;
     } catch (error) {
